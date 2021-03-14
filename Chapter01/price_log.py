@@ -37,4 +37,3 @@ class PriceLog(object):
         return cls(timestamp=result['timestamp'],
                    product_id=result['product'],
                    price=result['price'])
-
