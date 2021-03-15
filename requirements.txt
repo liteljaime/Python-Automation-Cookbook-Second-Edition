@@ -12,7 +12,7 @@ mistune==0.8.3
 fpdf==1.7.2
 pdf2image==0.1.14
 openpyxl==2.5.4
-matplotlib==2.2.5
+PyYAML==5.3
 Fiona==1.7.13
 Shapely==1.6.4.post2
 twilio==6.16.3
