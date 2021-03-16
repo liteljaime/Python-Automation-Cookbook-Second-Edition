@@ -1,5 +1,9 @@
 import argparse
 import sys
+import logging
+
+LOG_FORMAT = '%(asctime)s %(name)s %(levelname)s %(message)s'
+LOG_LEVEL = logging.DEBUG
 
 
 def main(number, other_number, output):
@@ -13,7 +17,18 @@ if __name__ == '__main__':
     parser.add_argument('-n2', type=int, help='A number', default=1)
     parser.add_argument('-o', dest='output', type=argparse.FileType('w'),
                         help='Output file', default=sys.stdout)
+    parser.add_argument('-l', dest='log', type=str,
+                        help='log file', default=None)
 
     args = parser.parse_args()
+    if args.log:
+        logging.basicConfig(format=LOG_FORMAT,
+                            filename=args.log, level=LOG_LEVEL)
+    else:
+        logging.basicConfig(format=LOG_FORMAT, level=LOG_LEVEL)
 
-    main(args.n1, args.n2, args.output)
+    try:
+        main(args.n1, args.n2, args.output)
+    except Exception as exc:
+        logging.exception('Error running task')
+        exit(1)
