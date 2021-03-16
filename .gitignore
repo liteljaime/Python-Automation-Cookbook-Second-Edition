@@ -4,4 +4,4 @@ __pycache__
 .DS_Store
 */*.txt
 */*.log
-Chapter02/email_conf.ini
+Chapter02/email_config.ini
