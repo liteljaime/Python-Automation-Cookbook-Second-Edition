@@ -15,6 +15,14 @@ def process_link(source_link, text):
     parsed_source = urlparse(source_link)
     result = requests.get(source_link)
 
+    if result.status_code != http.client.OK:
+        logging.error(f'Error retrieving {source_link}: {result}')
+        return []
+
+    if 'html' not in result.headers['Content-type']:
+        logging.info(f'Link {source_link} is not an HTML page')
+        return []
+
     page = BeautifulSoup(result.text, 'html.parser')
     search_text(source_link, page, text)
 
@@ -30,6 +38,9 @@ def get_links(parsed_source, page):
             continue
         # Avoid internal, same page links
         if link.startswith('#'):
+            continue
+
+        if link.endswith('pdf'):
             continue
 
         if link.startswith('mailto:'):
@@ -68,3 +79,20 @@ def main(base_url, to_search):
     while to_check and max_checks:
         link = to_check.pop(0)
         links = process_link(link, text=to_search)
+        checked_links.add(link)
+        for link in links:
+            if link not in checked_links:
+                checked_links.add(link)
+                to_check.append(link)
+
+        max_checks -= 1
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument(dest='url', type=str, help='Base site url')
+    parser.add_argument(
+        '-p', type=str, help=f'word to search, default: {DEFAULT_PHRASE}', default=DEFAULT_PHRASE)
+    args = parser.parse_args()
+
+    main(args.url, args.p)
