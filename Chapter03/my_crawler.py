@@ -58,3 +58,13 @@ def search_text(source_link, page, text):
     for element in page.find_all(text=re.compile(text, flags=re.IGNORECASE)):
         print(
             f'This link {source_link}: --> has the following text: {element}')
+
+
+def main(base_url, to_search):
+    checked_links = set()
+    to_check = [base_url]
+    max_checks = 10
+
+    while to_check and max_checks:
+        link = to_check.pop(0)
+        links = process_link(link, text=to_search)
