@@ -5,3 +5,4 @@ __pycache__
 */*.txt
 */*.log
 Chapter02/email_config.ini
+*/.ipynb_checkpoints/*
