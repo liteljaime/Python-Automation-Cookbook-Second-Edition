@@ -52,7 +52,7 @@ def get_links(parsed_source, page):
         if not link.startswith('http'):
             netloc = parsed_source.netloc
             scheme = parsed_source.scheme
-            path = parsed_source.path
+            path = urljoin(parsed_source.path, link)
             link = f'{scheme}://{netloc}{path}'
 
         # Only parse links in the same domain
